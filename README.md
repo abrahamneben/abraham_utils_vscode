@@ -14,23 +14,27 @@ Add to `cursorless.talon`
 ```
 (except | accept) <user.cursorless_target>:
     user.cursorless_vscode_command(
-    "merge_resolver.acceptConflictSide",
-    cursorless_target)
+        "merge_resolver.acceptConflictSide",
+        cursorless_target
+    )
 
 reject <user.cursorless_target>:
     user.cursorless_vscode_command(
         "merge_resolver.rejectConflictSide",
-        cursorless_target)
+        cursorless_target
+    )
 
 (except | accept) both <user.cursorless_target>:
     user.cursorless_vscode_command(
         "merge_resolver.acceptBothSides",
-        cursorless_target)
+        cursorless_target
+    )
 
 reject both <user.cursorless_target>:
     user.cursorless_vscode_command(
-    "merge_resolver.rejectBothSides",
-    cursorless_target)
+        "merge_resolver.rejectBothSides",
+        cursorless_target
+    )
 ```
 
 ## Development
