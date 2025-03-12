@@ -1,8 +1,8 @@
 ## Intent
 
-My usual workflow for resolving git conflicts is to edit the conflicted file directly. I might manually update the "current" block with the changes from the "incoming" block. Then I will simply delete the "incoming" block. The VSCode git conflict viewer is read only, so it does not allow this workflow.
+My usual workflow for resolving git conflicts is to edit the conflicted file directly. I might manually update the "current" block with the changes from the "incoming" block. Then I will simply delete the "incoming" block. In contrast, the VSCode git conflict viewer is read only, so it does not allow this workflow.
 
-This VSCode extension adds several commands to make it easy to accept/reject either or both sides of a conflict region. The commands are designed to be connected to spoken activation phrases in Talon, specifying a cursorless target to indicate the conflict region and side to accept/reject.
+This VSCode extension adds several commands to make it easy to accept/reject either or both sides of a conflict region. The commands are designed to be connected to spoken activation phrases in Talon, with a cursorless target specified to indicate the conflict region and the side to accept/reject.
 
 ## Demo
 
