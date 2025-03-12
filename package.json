@@ -2,7 +2,7 @@
   "name": "conflict-resolver",
   "displayName": "ConflictResolver",
   "description": "Resolve merge conflicts in text editor view.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/abrahamneben/conflict_resolver.git"
@@ -19,30 +19,31 @@
     "onCommand:conflict_resolver.rejectConflictSide",
     "onCommand:conflict_resolver.acceptBothSides",
     "onCommand:conflict_resolver.rejectBothSides",
-    "onCommand:conflict_resolver.gotoNextConflict"
+    "onCommand:conflict_resolver.gotoNextConflict",
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "conflict_resolver.acceptConflictSide",
-        "title": "Merge Resolver: Accept Conflict Selection Side"
+        "title": "Conflict Resolver: Accept Conflict Selection Side"
       },
       {
         "command": "conflict_resolver.rejectConflictSide",
-        "title": "Merge Resolver: Reject Conflict Selection Side"
+        "title": "Conflict Resolver: Reject Conflict Selection Side"
       },
       {
         "command": "conflict_resolver.acceptBothSides",
-        "title": "Merge Resolver: Accept Both Conflict Sides"
+        "title": "Conflict Resolver: Accept Both Conflict Sides"
       },
       {
         "command": "conflict_resolver.rejectBothSides",
-        "title": "Merge Resolver: Reject Both Conflict Sides"
+        "title": "Conflict Resolver: Reject Both Conflict Sides"
       },
       {
         "command": "conflict_resolver.gotoNextConflict",
-        "title": "Merge Resolver: Go to Next Conflict"
+        "title": "Conflict Resolver: Go to Next Conflict"
       }
     ]
   },
@@ -54,6 +55,9 @@
     "lint": "eslint src",
     "test": "vscode-test"
   },
+  "dependencies": {
+    "simple-git": "^3.27.0"
+  },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
@@ -63,7 +67,6 @@
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "eslint": "^9.16.0",
-    "simple-git": "^3.27.0",
     "typescript": "^5.7.2"
   }
 }
