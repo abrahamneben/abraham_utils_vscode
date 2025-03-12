@@ -15,25 +15,25 @@ This VSCode extension adds several commands to make it easy to accept/reject eit
 
 (except | accept) <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "conflict_resolver.acceptConflictSide",
+        "abraham_talon_vscode.acceptConflictSide",
         cursorless_target
     )
 
 reject <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "conflict_resolver.rejectConflictSide",
+        "abraham_talon_vscode.rejectConflictSide",
         cursorless_target
     )
 
 (except | accept) both <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "conflict_resolver.acceptBothSides",
+        "abraham_talon_vscode.acceptBothSides",
         cursorless_target
     )
 
 reject both <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "conflict_resolver.rejectBothSides",
+        "abraham_talon_vscode.rejectBothSides",
         cursorless_target
     )
 ```
@@ -42,7 +42,7 @@ reject both <user.cursorless_target>:
 # vscode.talon
 
 go conflict:
-    user.vscode("conflict_resolver.gotoNextConflict")
+    user.vscode("abraham_talon_vscode.gotoNextConflict")
 ```
 
 ## Development

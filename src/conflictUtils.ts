@@ -207,7 +207,7 @@ export function rejectBothConflictSides(
 }
 
 
-export async function gotoNextConflict(editor: vscode.TextEditor) {
+export async function goNextConflict(editor: vscode.TextEditor) {
   try {
 
     const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0].uri.fsPath : null;

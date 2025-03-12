@@ -4,13 +4,18 @@ import {
   acceptOrRejectConflictSide,
   acceptBothConflictSides,
   rejectBothConflictSides,
-  gotoNextConflict } from './conflictUtils';
+  goNextConflict
+} from './conflictUtils';
+import {
+  goBuildFile,
+  toggleHeaderAndSourceFile
+} from './workspaceNavigator';
 
 export function activate(
   context: vscode.ExtensionContext) {
   // Register commands
   context.subscriptions.push(
-    vscode.commands.registerCommand('conflict_resolver.acceptConflictSide', () => {
+    vscode.commands.registerCommand('abraham_talon_vscode.acceptConflictSide', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -23,7 +28,7 @@ export function activate(
 
     }),
 
-    vscode.commands.registerCommand('conflict_resolver.rejectConflictSide', () => {
+    vscode.commands.registerCommand('abraham_talon_vscode.rejectConflictSide', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -35,7 +40,7 @@ export function activate(
       }
     }),
 
-    vscode.commands.registerCommand('conflict_resolver.acceptBothSides', () => {
+    vscode.commands.registerCommand('abraham_talon_vscode.acceptBothSides', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -47,7 +52,7 @@ export function activate(
       }
     }),
 
-    vscode.commands.registerCommand('conflict_resolver.rejectBothSides', () => {
+    vscode.commands.registerCommand('abraham_talon_vscode.rejectBothSides', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -59,12 +64,28 @@ export function activate(
       }
     }),
 
-    vscode.commands.registerCommand('conflict_resolver.gotoNextConflict', () => {
+    vscode.commands.registerCommand('abraham_talon_vscode.goNextConflict', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
-      gotoNextConflict(editor);
+      goNextConflict(editor);
+    }),
+
+    vscode.commands.registerCommand('abraham_talon_vscode.goBuildFile', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) return;
+
+      goBuildFile(editor);
+    }),
+
+    vscode.commands.registerCommand('abraham_talon_vscode.toggleHeaderAndSourceFile', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) return;
+
+      toggleHeaderAndSourceFile(editor);
     })
+
+
   );
 }
 

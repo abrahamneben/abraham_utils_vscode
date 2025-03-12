@@ -1,11 +1,11 @@
 {
-  "name": "conflict-resolver",
-  "displayName": "ConflictResolver",
+  "name": "abraham-talon-vscode",
+  "displayName": "Abraham Talon VSCode",
   "description": "Resolve merge conflicts in text editor view.",
   "version": "0.0.2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/abrahamneben/conflict_resolver.git"
+    "url": "https://github.com/abrahamneben/abraham_talon_vscode.git"
   },
   "publisher": "Abraham Neben",
   "engines": {
@@ -15,35 +15,44 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:conflict_resolver.acceptConflictSide",
-    "onCommand:conflict_resolver.rejectConflictSide",
-    "onCommand:conflict_resolver.acceptBothSides",
-    "onCommand:conflict_resolver.rejectBothSides",
-    "onCommand:conflict_resolver.gotoNextConflict",
-    "onStartupFinished"
+    "onCommand:abraham_talon_vscode.acceptConflictSide",
+    "onCommand:abraham_talon_vscode.rejectConflictSide",
+    "onCommand:abraham_talon_vscode.acceptBothSides",
+    "onCommand:abraham_talon_vscode.rejectBothSides",
+    "onCommand:abraham_talon_vscode.goNextConflict",
+    "onCommand:abraham_talon_vscode.goBuildFile",
+    "onCommand:abraham_talon_vscode.toggleHeaderAndSourceFile"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "conflict_resolver.acceptConflictSide",
-        "title": "Conflict Resolver: Accept Conflict Selection Side"
+        "command": "abraham_talon_vscode.acceptConflictSide",
+        "title": "Abraham Talon VSCode: Accept Conflict Selection Side"
       },
       {
-        "command": "conflict_resolver.rejectConflictSide",
-        "title": "Conflict Resolver: Reject Conflict Selection Side"
+        "command": "abraham_talon_vscode.rejectConflictSide",
+        "title": "Abraham Talon VSCode: Reject Conflict Selection Side"
       },
       {
-        "command": "conflict_resolver.acceptBothSides",
-        "title": "Conflict Resolver: Accept Both Conflict Sides"
+        "command": "abraham_talon_vscode.acceptBothSides",
+        "title": "Abraham Talon VSCode: Accept Both Conflict Sides"
       },
       {
-        "command": "conflict_resolver.rejectBothSides",
-        "title": "Conflict Resolver: Reject Both Conflict Sides"
+        "command": "abraham_talon_vscode.rejectBothSides",
+        "title": "Abraham Talon VSCode: Reject Both Conflict Sides"
       },
       {
-        "command": "conflict_resolver.gotoNextConflict",
-        "title": "Conflict Resolver: Go to Next Conflict"
+        "command": "abraham_talon_vscode.goNextConflict",
+        "title": "Abraham Talon VSCode: Go to Next Conflict"
+      },
+      {
+        "command": "abraham_talon_vscode.goBuildFile",
+        "title": "Abraham Talon VSCode: Go to Nearest Build File"
+      },
+      {
+        "command": "abraham_talon_vscode.toggleHeaderAndSourceFile",
+        "title": "Abraham Talon VSCode: Go to header or source file"
       }
     ]
   },
