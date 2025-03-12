@@ -4,13 +4,13 @@ import {
   acceptOrRejectConflictSide,
   acceptBothConflictSides,
   rejectBothConflictSides,
-  navigateToNextConflict } from './conflictUtils';
+  gotoNextConflict } from './conflictUtils';
 
 export function activate(
   context: vscode.ExtensionContext) {
   // Register commands
   context.subscriptions.push(
-    vscode.commands.registerCommand('merge_resolver.acceptConflictSide', () => {
+    vscode.commands.registerCommand('conflict_resolver.acceptConflictSide', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -23,7 +23,7 @@ export function activate(
 
     }),
 
-    vscode.commands.registerCommand('merge_resolver.rejectConflictSide', () => {
+    vscode.commands.registerCommand('conflict_resolver.rejectConflictSide', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -35,7 +35,7 @@ export function activate(
       }
     }),
 
-    vscode.commands.registerCommand('merge_resolver.acceptBothSides', () => {
+    vscode.commands.registerCommand('conflict_resolver.acceptBothSides', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -47,7 +47,7 @@ export function activate(
       }
     }),
 
-    vscode.commands.registerCommand('merge_resolver.rejectBothSides', () => {
+    vscode.commands.registerCommand('conflict_resolver.rejectBothSides', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -59,11 +59,11 @@ export function activate(
       }
     }),
 
-    vscode.commands.registerCommand('merge_resolver.navigateToNextConflict', () => {
+    vscode.commands.registerCommand('conflict_resolver.gotoNextConflict', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
-      navigateToNextConflict(editor);
+      gotoNextConflict(editor);
     })
   );
 }

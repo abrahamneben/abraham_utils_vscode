@@ -1,9 +1,12 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
+
+const simpleGit = require('simple-git');
 
 const CONFLICT_START_PATTERN = /^<<<<<<<\s*(.*)$/;
 const CONFLICT_DIVIDER_PATTERN = /^=======\s*(.*)$/;
 const CONFLICT_END_PATTERN = /^>>>>>>>\s*(.*)$/;
-const CONFLICT_ANY_PATTERN = /^(<<<<<<<|=======|>>>>>>>)\s*(.*)$/;
+const CONFLICT_ANY_PATTERN = /^(<<<<<<<|=======|>>>>>>>)\s*(.*)$/m;
 
 type ConflictBlock = {
   start: number;
@@ -83,7 +86,6 @@ export function acceptOrRejectConflictSide(
 
 
   if (selection) {
-    console.log(selection.start.line,selection.end.line);
 
     let selectionStart = selection.start.line;
     let selectionEnd = selection.end.line;
@@ -205,15 +207,62 @@ export function rejectBothConflictSides(
 }
 
 
+export async function gotoNextConflict(editor: vscode.TextEditor) {
+  try {
 
+    const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0].uri.fsPath : null;
 
-export function navigateToNextConflict(editor: vscode.TextEditor) {
-  // Find next conflict and move to it
-  const document = editor.document;
-  for (let i = editor.selection.active.line + 1; i < document.lineCount; i++) {
-    if (CONFLICT_ANY_PATTERN.test(document.lineAt(i).text)) {
-      editor.selection = new vscode.Selection(i, 0, i, 0);
-      break;
+    if (!workspaceFolder) {
+      vscode.window.showErrorMessage('No workspace folder open.');
+      return;
     }
+
+    const git = simpleGit(workspaceFolder)
+    const status = await git.status();
+    const conflictedFiles = status.conflicted;
+
+    // If there are no conflicted files, show a message and return
+    if (conflictedFiles.length === 0) {
+      vscode.window.showInformationMessage("No conflicts found.");
+      return;
+    }
+
+      // Open the first conflicted file
+      const filePath = path.join(workspaceFolder, conflictedFiles[0]);
+      await openFileAndScrollToConflict(filePath);
+    } catch (error) {
+      vscode.window.showErrorMessage("Error finding conflicts.");
+      console.error(error);
+    }
+  }
+
+async function openFileAndScrollToConflict(filePath: string) {
+  try {
+    // Open the conflicted file
+    const uri = vscode.Uri.file(filePath);
+    const document = await vscode.workspace.openTextDocument(uri);
+    const editor = await vscode.window.showTextDocument(document);
+
+    // Find the first conflict marker in the file
+    const text = document.getText();
+    const match = text.match(CONFLICT_ANY_PATTERN);
+
+    if (match) {
+
+      // Get the position of the conflict marker
+      const position = document.positionAt(text.indexOf(match[0]));
+      const range = new vscode.Range(position, position);
+
+      // Set the selection to the conflict marker
+      editor.selection = new vscode.Selection(range.start, range.end);
+
+      // Scroll to the conflict marker (center it in the editor window)
+      editor.revealRange(range, vscode.TextEditorRevealType.InCenter);
+    } else {
+      vscode.window.showInformationMessage("No conflict markers found in the file.");
+    }
+  } catch (error) {
+    vscode.window.showErrorMessage("Error opening file or finding conflict.");
+    console.error(error);
   }
 }

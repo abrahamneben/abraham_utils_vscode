@@ -1,11 +1,11 @@
 {
-  "name": "merge-resolver",
-  "displayName": "MergeResolver",
+  "name": "conflict-resolver",
+  "displayName": "ConflictResolver",
   "description": "Resolve merge conflicts in text editor view.",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/abrahamneben/merge_resolver.git"
+    "url": "https://github.com/abrahamneben/conflict_resolver.git"
   },
   "publisher": "Abraham Neben",
   "engines": {
@@ -15,33 +15,33 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:merge_resolver.acceptConflictSide",
-    "onCommand:merge_resolver.rejectConflictSide",
-    "onCommand:merge_resolver.acceptBothSides",
-    "onCommand:merge_resolver.rejectBothSides",
-    "onCommand:merge_resolver.gotoNextConflict"
+    "onCommand:conflict_resolver.acceptConflictSide",
+    "onCommand:conflict_resolver.rejectConflictSide",
+    "onCommand:conflict_resolver.acceptBothSides",
+    "onCommand:conflict_resolver.rejectBothSides",
+    "onCommand:conflict_resolver.gotoNextConflict"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "merge_resolver.acceptConflictSide",
+        "command": "conflict_resolver.acceptConflictSide",
         "title": "Merge Resolver: Accept Conflict Selection Side"
       },
       {
-        "command": "merge_resolver.rejectConflictSide",
+        "command": "conflict_resolver.rejectConflictSide",
         "title": "Merge Resolver: Reject Conflict Selection Side"
       },
       {
-        "command": "merge_resolver.acceptBothSides",
+        "command": "conflict_resolver.acceptBothSides",
         "title": "Merge Resolver: Accept Both Conflict Sides"
       },
       {
-        "command": "merge_resolver.rejectBothSides",
+        "command": "conflict_resolver.rejectBothSides",
         "title": "Merge Resolver: Reject Both Conflict Sides"
       },
       {
-        "command": "merge_resolver.gotoNextConflict",
+        "command": "conflict_resolver.gotoNextConflict",
         "title": "Merge Resolver: Go to Next Conflict"
       }
     ]
@@ -55,14 +55,15 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.98.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/vscode": "^1.98.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
-    "eslint": "^9.16.0",
-    "typescript": "^5.7.2",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.16.0",
+    "simple-git": "^3.27.0",
+    "typescript": "^5.7.2"
   }
 }

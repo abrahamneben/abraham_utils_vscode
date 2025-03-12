@@ -10,31 +10,39 @@ This VSCode extension adds several commands to make it easy to accept/reject eit
 
 ## Talon rules
 
-Add to `cursorless.talon`
 ```
+# cursorless.talon
+
 (except | accept) <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "merge_resolver.acceptConflictSide",
+        "conflict_resolver.acceptConflictSide",
         cursorless_target
     )
 
 reject <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "merge_resolver.rejectConflictSide",
+        "conflict_resolver.rejectConflictSide",
         cursorless_target
     )
 
 (except | accept) both <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "merge_resolver.acceptBothSides",
+        "conflict_resolver.acceptBothSides",
         cursorless_target
     )
 
 reject both <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "merge_resolver.rejectBothSides",
+        "conflict_resolver.rejectBothSides",
         cursorless_target
     )
+```
+
+```
+# vscode.talon
+
+go conflict:
+    user.vscode("conflict_resolver.gotoNextConflict")
 ```
 
 ## Development
@@ -42,4 +50,4 @@ Open Command Palette (Cmd-Shift-P or View > Command Palette), and open `Debug: S
 
 ## Manual Installation
 1. `vsce package`
-2. `code --install-extension merge-resolver-0.0.1.vsix`
+2. `code --install-extension conflict-resolver-0.0.1.vsix`
