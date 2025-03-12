@@ -8,27 +8,37 @@
     "vscode": "^1.98.0"
   },
   "categories": [
-    "Programming"
+    "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:merge_resolver.acceptConflictSide",
+    "onCommand:merge_resolver.rejectConflictSide",
+    "onCommand:merge_resolver.acceptBothSides",
+    "onCommand:merge_resolver.rejectsBothSides",
+    "onCommand:merge_resolver.gotoNextConflict"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "merge-resolver.acceptConflictSide",
-        "title": "Accept Conflict Side Containing Selection"
+        "command": "merge_resolver.acceptConflictSide",
+        "title": "Merge Resolver: Accept Conflict Selection Side"
       },
       {
-        "command": "merge-resolver.acceptBothSides",
-        "title": "Accept Both Sides of Conflict"
+        "command": "merge_resolver.rejectConflictSide",
+        "title": "Merge Resolver: Reject Conflict Selection Side"
       },
       {
-        "command": "merge-resolver.acceptNeitherSide",
-        "title": "Accept Neither Side of Conflict"
+        "command": "merge_resolver.acceptBothSides",
+        "title": "Merge Resolver: Accept Both Conflict Sides"
       },
       {
-        "command": "merge-resolver.gotoNextConflict",
-        "title": "Go to Next Conflict"
+        "command": "merge_resolver.rejectBothSides",
+        "title": "Merge Resolver: Reject Both Conflict Sides"
+      },
+      {
+        "command": "merge_resolver.gotoNextConflict",
+        "title": "Merge Resolver: Go to Next Conflict"
       }
     ]
   },

@@ -1,123 +1,71 @@
 import * as vscode from 'vscode';
+import {
+  getConflictBlock,
+  acceptOrRejectConflictSide,
+  acceptBothConflictSides,
+  rejectBothConflictSides,
+  navigateToNextConflict } from './conflictUtils';
 
+export function activate(
+  context: vscode.ExtensionContext) {
+  // Register commands
+  context.subscriptions.push(
+    vscode.commands.registerCommand('merge_resolver.acceptConflictSide', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) return;
 
+      const selection = editor.selection;
+      const conflictBlock = getConflictBlock(editor.document, selection.start);
 
-// Define the ConflictBlock type
-interface ConflictBlock {
-    startLine: number;
-    endLine: number;
-    side: 'current' | 'incoming';  // side of the conflict
-    current: string;               // the current side of the conflict
-    incoming: string;              // the incoming side of the conflict
-}
+      if (conflictBlock && !editor.selection.isEmpty) {
+        acceptOrRejectConflictSide(editor, conflictBlock, selection, true);
+      }
 
-export function activate(context: vscode.ExtensionContext) {
-    console.log('Abraham Extension activated!');
+    }),
 
-    // Command to accept the conflict side containing the selection
-    let acceptConflictSide = vscode.commands.registerCommand('merge-resolver.acceptConflictSide', () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) return;
+    vscode.commands.registerCommand('merge_resolver.rejectConflictSide', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) return;
 
-        const selection = editor.selection;
-        const document = editor.document;
-        const conflictBlock = findConflictBlock(document, selection);
-        if (conflictBlock) {
-            const { startLine, endLine, side } = conflictBlock;
-            const newText = side === 'current' ? conflictBlock.current : conflictBlock.incoming;
-            editor.edit(editBuilder => {
-                editBuilder.replace(new vscode.Range(startLine, 0, endLine, document.lineAt(endLine).text.length), newText);
-            });
-        }
-    });
+      const selection = editor.selection;
+      const conflictBlock = getConflictBlock(editor.document, selection.start);
 
-    // Command to accept both sides of the conflict
-    let acceptBothSides = vscode.commands.registerCommand('merge-resolver.acceptBothSides', () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) return;
+      if (conflictBlock && !editor.selection.isEmpty) {
+        acceptOrRejectConflictSide(editor, conflictBlock, selection, false);
+      }
+    }),
 
-        const selection = editor.selection;
-        const document = editor.document;
-        const conflictBlock = findConflictBlock(document, selection);
-        if (conflictBlock) {
-            const mergedText = conflictBlock.current + "\n" + conflictBlock.incoming;
-            editor.edit(editBuilder => {
-                editBuilder.replace(new vscode.Range(conflictBlock.startLine, 0, conflictBlock.endLine, document.lineAt(conflictBlock.endLine).text.length), mergedText);
-            });
-        }
-    });
+    vscode.commands.registerCommand('merge_resolver.acceptBothSides', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) return;
 
-    // Command to accept neither side of the conflict
-    let acceptNeitherSide = vscode.commands.registerCommand('merge-resolver.acceptNeitherSide', () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) return;
+      const selection = editor.selection;
+      const conflictBlock = getConflictBlock(editor.document, selection.start);
 
-        const selection = editor.selection;
-        const document = editor.document;
-        const conflictBlock = findConflictBlock(document, selection);
-        if (conflictBlock) {
-            editor.edit(editBuilder => {
-                editBuilder.delete(new vscode.Range(conflictBlock.startLine, 0, conflictBlock.endLine, document.lineAt(conflictBlock.endLine).text.length));
-            });
-        }
-    });
+      if (conflictBlock && !editor.selection.isEmpty) {
+        acceptBothConflictSides(editor, conflictBlock);
+      }
+    }),
 
-    // Command to navigate to the next conflict
-    let gotoNextConflict = vscode.commands.registerCommand('merge-resolver.gotoNextConflict', () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) return;
+    vscode.commands.registerCommand('merge_resolver.rejectBothSides', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) return;
 
-        const document = editor.document;
-        const conflicts = findConflictsInDocument(document);
-        const currentConflict = findConflictBlock(document, editor.selection);
+      const selection = editor.selection;
+      const conflictBlock = getConflictBlock(editor.document, selection.start);
 
-        // Use the next conflict logic, and ensure it's type-safe
-        const nextConflict = findNextConflict(conflicts, currentConflict);
+      if (conflictBlock && !editor.selection.isEmpty) {
+        rejectBothConflictSides(editor, conflictBlock);
+      }
+    }),
 
-        if (nextConflict) {
-            editor.selection = new vscode.Selection(nextConflict.startLine, 0, nextConflict.startLine, 0);
-            editor.revealRange(new vscode.Range(nextConflict.startLine, 0, nextConflict.startLine, 0), vscode.TextEditorRevealType.InCenter);
-        }
-    });
+    vscode.commands.registerCommand('merge_resolver.navigateToNextConflict', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) return;
 
-    context.subscriptions.push(acceptConflictSide, acceptBothSides, acceptNeitherSide, gotoNextConflict);
+      navigateToNextConflict(editor);
+    })
+  );
 }
 
 export function deactivate() {}
-
-// Function to find the conflict block surrounding the selection
-function findConflictBlock(document: vscode.TextDocument, selection: vscode.Selection): ConflictBlock | undefined {
-    const startLine = selection.start.line;
-    const endLine = selection.end.line;
-
-    // Simple example condition (you need to replace this with actual conflict detection logic)
-    if (startLine < 10 && endLine > 5) {  // Replace with your conflict detection logic
-        return {
-            startLine: 5,       // The starting line of the conflict
-            endLine: 10,        // The ending line of the conflict
-            side: 'current',    // Which side of the conflict to preserve ('current' or 'incoming')
-            current: 'Current version text here...',  // The current side text of the conflict
-            incoming: 'Incoming version text here...' // The incoming side text of the conflict
-        };
-    }
-
-    return undefined; // Return undefined if no conflict is found
-}
-
-// Function to find all conflicts in the document
-function findConflictsInDocument(document: vscode.TextDocument): ConflictBlock[] {
-    // Implement the logic to find all conflicts in the document and return them as an array
-    return [];
-}
-
-// Function to find the next conflict block in the document
-function findNextConflict(conflicts: ConflictBlock[], currentConflict: ConflictBlock | undefined): ConflictBlock | undefined {
-    if (!currentConflict) return undefined;
-
-    const currentIndex = conflicts.findIndex(conflict => conflict.startLine === currentConflict.startLine);
-    if (currentIndex === -1 || currentIndex + 1 >= conflicts.length) {
-        return undefined;
-    }
-
-    return conflicts[currentIndex + 1];
-}
