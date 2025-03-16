@@ -1,7 +1,7 @@
 {
   "name": "abraham-talon-vscode",
-  "displayName": "Abraham Talon VSCode",
-  "description": "Resolve merge conflicts in text editor view.",
+  "displayName": "Abraham Talon",
+  "description": "Vscode backend for various talon commands.",
   "version": "0.0.2",
   "repository": {
     "type": "git",
