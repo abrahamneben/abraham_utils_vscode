@@ -10,25 +10,25 @@ This VSCode extension adds several commands to make it easy to accept/reject eit
 
 (except | accept) <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "abraham_talon_vscode.acceptConflictSide",
+        "abraham_utils.acceptConflictSide",
         cursorless_target
     )
 
 reject <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "abraham_talon_vscode.rejectConflictSide",
+        "abraham_utils.rejectConflictSide",
         cursorless_target
     )
 
 (except | accept) both <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "abraham_talon_vscode.acceptBothSides",
+        "abraham_utils.acceptBothSides",
         cursorless_target
     )
 
 reject both <user.cursorless_target>:
     user.cursorless_vscode_command(
-        "abraham_talon_vscode.rejectBothSides",
+        "abraham_utils.rejectBothSides",
         cursorless_target
     )
 ```
@@ -37,7 +37,7 @@ reject both <user.cursorless_target>:
 # vscode.talon
 
 go conflict:
-    user.vscode("abraham_talon_vscode.gotoNextConflict")
+    user.vscode("abraham_utils.gotoNextConflict")
 ```
 
 ## File jumping
@@ -47,11 +47,11 @@ go conflict:
 
 # Jump to the nearest BUILD file in the current directory or above
 go build:
-    user.vscode("abraham_talon_vscode.goBuildFile")
+    user.vscode("abraham_utils.goBuildFile")
 
 # If we are currently viewing a C/C++ implementation file, jump header file (and vice versa).
 go sister:
-    user.vscode("abraham_talon_vscode.toggleHeaderAndSourceFile")
+    user.vscode("abraham_utils.toggleHeaderAndSourceFile")
 ```
 
 ## Development

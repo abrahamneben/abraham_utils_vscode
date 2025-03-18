@@ -1,11 +1,11 @@
 {
-  "name": "abraham-talon-vscode",
-  "displayName": "Abraham Talon",
+  "name": "abraham-utils",
+  "displayName": "Abraham Utils",
   "description": "Vscode backend for various talon commands.",
   "version": "0.0.2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/abrahamneben/abraham_talon_vscode.git"
+    "url": "https://github.com/abrahamneben/abraham_utils.git"
   },
   "publisher": "Abraham Neben",
   "engines": {
@@ -15,44 +15,44 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:abraham_talon_vscode.acceptConflictSide",
-    "onCommand:abraham_talon_vscode.rejectConflictSide",
-    "onCommand:abraham_talon_vscode.acceptBothSides",
-    "onCommand:abraham_talon_vscode.rejectBothSides",
-    "onCommand:abraham_talon_vscode.goNextConflict",
-    "onCommand:abraham_talon_vscode.goBuildFile",
-    "onCommand:abraham_talon_vscode.toggleHeaderAndSourceFile"
+    "onCommand:abraham_utils.acceptConflictSide",
+    "onCommand:abraham_utils.rejectConflictSide",
+    "onCommand:abraham_utils.acceptBothSides",
+    "onCommand:abraham_utils.rejectBothSides",
+    "onCommand:abraham_utils.goNextConflict",
+    "onCommand:abraham_utils.goBuildFile",
+    "onCommand:abraham_utils.toggleHeaderAndSourceFile"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "abraham_talon_vscode.acceptConflictSide",
-        "title": "Abraham Talon VSCode: Accept Conflict Selection Side"
+        "command": "abraham_utils.acceptConflictSide",
+        "title": "Abraham Utils: Accept Conflict Selection Side"
       },
       {
-        "command": "abraham_talon_vscode.rejectConflictSide",
-        "title": "Abraham Talon VSCode: Reject Conflict Selection Side"
+        "command": "abraham_utils.rejectConflictSide",
+        "title": "Abraham Utils: Reject Conflict Selection Side"
       },
       {
-        "command": "abraham_talon_vscode.acceptBothSides",
-        "title": "Abraham Talon VSCode: Accept Both Conflict Sides"
+        "command": "abraham_utils.acceptBothSides",
+        "title": "Abraham Utils: Accept Both Conflict Sides"
       },
       {
-        "command": "abraham_talon_vscode.rejectBothSides",
-        "title": "Abraham Talon VSCode: Reject Both Conflict Sides"
+        "command": "abraham_utils.rejectBothSides",
+        "title": "Abraham Utils: Reject Both Conflict Sides"
       },
       {
-        "command": "abraham_talon_vscode.goNextConflict",
-        "title": "Abraham Talon VSCode: Go to Next Conflict"
+        "command": "abraham_utils.goNextConflict",
+        "title": "Abraham Utils: Go to Next Conflict"
       },
       {
-        "command": "abraham_talon_vscode.goBuildFile",
-        "title": "Abraham Talon VSCode: Go to Nearest Build File"
+        "command": "abraham_utils.goBuildFile",
+        "title": "Abraham Utils: Go to Nearest Build File"
       },
       {
-        "command": "abraham_talon_vscode.toggleHeaderAndSourceFile",
-        "title": "Abraham Talon VSCode: Go to header or source file"
+        "command": "abraham_utils.toggleHeaderAndSourceFile",
+        "title": "Abraham Utils: Go to header or source file"
       }
     ]
   },

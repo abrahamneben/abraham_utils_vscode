@@ -15,7 +15,7 @@ export function activate(
   context: vscode.ExtensionContext) {
   // Register commands
   context.subscriptions.push(
-    vscode.commands.registerCommand('abraham_talon_vscode.acceptConflictSide', () => {
+    vscode.commands.registerCommand('abraham_utils.acceptConflictSide', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -28,7 +28,7 @@ export function activate(
 
     }),
 
-    vscode.commands.registerCommand('abraham_talon_vscode.rejectConflictSide', () => {
+    vscode.commands.registerCommand('abraham_utils.rejectConflictSide', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -40,7 +40,7 @@ export function activate(
       }
     }),
 
-    vscode.commands.registerCommand('abraham_talon_vscode.acceptBothSides', () => {
+    vscode.commands.registerCommand('abraham_utils.acceptBothSides', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -52,7 +52,7 @@ export function activate(
       }
     }),
 
-    vscode.commands.registerCommand('abraham_talon_vscode.rejectBothSides', () => {
+    vscode.commands.registerCommand('abraham_utils.rejectBothSides', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
@@ -64,21 +64,21 @@ export function activate(
       }
     }),
 
-    vscode.commands.registerCommand('abraham_talon_vscode.goNextConflict', () => {
+    vscode.commands.registerCommand('abraham_utils.goNextConflict', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
       goNextConflict(editor);
     }),
 
-    vscode.commands.registerCommand('abraham_talon_vscode.goBuildFile', () => {
+    vscode.commands.registerCommand('abraham_utils.goBuildFile', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
       goBuildFile(editor);
     }),
 
-    vscode.commands.registerCommand('abraham_talon_vscode.toggleHeaderAndSourceFile', () => {
+    vscode.commands.registerCommand('abraham_utils.toggleHeaderAndSourceFile', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) return;
 
