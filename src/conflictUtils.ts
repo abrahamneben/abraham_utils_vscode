@@ -1,13 +1,10 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
-
-const fs = require('fs').promises;
-const simpleGit = require('simple-git');
+import * as vscode from "vscode";
+import { execSync } from "child_process";
 
 const CONFLICT_START_PATTERN = /^<<<<<<<\s*(.*)$/;
 const CONFLICT_DIVIDER_PATTERN = /^=======\s*(.*)$/;
 const CONFLICT_END_PATTERN = /^>>>>>>>\s*(.*)$/;
-const CONFLICT_ANY_PATTERN = /^(<<<<<<<|=======|>>>>>>>)\s*(.*)$/m;
+const CONFLICT_ANY_PATTERN = "^(<{7}|={7}|>{7})";
 
 type ConflictBlock = {
   start: number;
@@ -15,8 +12,10 @@ type ConflictBlock = {
   end: number;
 };
 
-
-export function getConflictBlock(document: vscode.TextDocument, position: vscode.Position) {
+export function getConflictBlock(
+  document: vscode.TextDocument,
+  position: vscode.Position
+) {
   // Line numbers
   const selectionline = position.line;
   let conflictStart: number | null = null;
@@ -62,7 +61,8 @@ export function getConflictBlock(document: vscode.TextDocument, position: vscode
     return null;
   }
 
-  let isValid = (conflictStart < conflictDivider) && (conflictDivider < conflictEnd);
+  let isValid =
+    conflictStart < conflictDivider && conflictDivider < conflictEnd;
   if (!isValid) {
     return null;
   }
@@ -74,8 +74,8 @@ export function acceptOrRejectConflictSide(
   editor: vscode.TextEditor,
   conflictBlock: ConflictBlock,
   selection: vscode.Selection | null,
-  shouldAccept: boolean = true) {
-
+  shouldAccept: boolean = true
+) {
   let conflictStart = conflictBlock.start;
   let conflictDivider = conflictBlock.divider;
   let conflictEnd = conflictBlock.end;
@@ -83,20 +83,20 @@ export function acceptOrRejectConflictSide(
   const document = editor.document;
   const edit = new vscode.WorkspaceEdit();
 
-
-
-
   if (selection) {
-
     let selectionStart = selection.start.line;
     let selectionEnd = selection.end.line;
 
-    let choseCurrentBlock = (conflictStart <= selectionStart) && (selectionEnd < conflictDivider)
-    let choseIncomingBlock = (conflictDivider < selectionStart) && (selectionEnd <= conflictEnd)
+    let choseCurrentBlock =
+      conflictStart <= selectionStart && selectionEnd < conflictDivider;
+    let choseIncomingBlock =
+      conflictDivider < selectionStart && selectionEnd <= conflictEnd;
 
     // Keep current block
-    if ((choseCurrentBlock && shouldAccept) || (choseIncomingBlock && !shouldAccept)) {
-
+    if (
+      (choseCurrentBlock && shouldAccept) ||
+      (choseIncomingBlock && !shouldAccept)
+    ) {
       edit.delete(
         document.uri,
         new vscode.Range(
@@ -118,8 +118,10 @@ export function acceptOrRejectConflictSide(
     }
 
     // Keep incoming block
-    if ((choseIncomingBlock && shouldAccept) || (choseCurrentBlock && !shouldAccept)) {
-
+    if (
+      (choseIncomingBlock && shouldAccept) ||
+      (choseCurrentBlock && !shouldAccept)
+    ) {
       edit.delete(
         document.uri,
         new vscode.Range(
@@ -141,14 +143,13 @@ export function acceptOrRejectConflictSide(
     }
   }
 
-  vscode.window.showWarningMessage("Invalid selection.")
-
+  vscode.window.showWarningMessage("Invalid selection.");
 }
 
 export function acceptBothConflictSides(
   editor: vscode.TextEditor,
-  conflictBlock: ConflictBlock) {
-
+  conflictBlock: ConflictBlock
+) {
   let conflictStart = conflictBlock.start;
   let conflictDivider = conflictBlock.divider;
   let conflictEnd = conflictBlock.end;
@@ -181,13 +182,12 @@ export function acceptBothConflictSides(
   );
 
   vscode.workspace.applyEdit(edit);
-
 }
 
 export function rejectBothConflictSides(
   editor: vscode.TextEditor,
-  conflictBlock: ConflictBlock) {
-
+  conflictBlock: ConflictBlock
+) {
   let conflictStart = conflictBlock.start;
   let conflictDivider = conflictBlock.divider;
   let conflictEnd = conflictBlock.end;
@@ -204,81 +204,85 @@ export function rejectBothConflictSides(
   );
 
   vscode.workspace.applyEdit(edit);
-
 }
-
 
 export async function goNextConflict(editor: vscode.TextEditor) {
+  const workspaceFolder = vscode.workspace.workspaceFolders
+    ? vscode.workspace.workspaceFolders[0].uri.fsPath
+    : null;
+
+  if (!workspaceFolder) {
+    vscode.window.showErrorMessage("No workspace folder open.");
+    return;
+  }
+
+  const gitExtension = vscode.extensions.getExtension("vscode.git");
+
+  if (!gitExtension || !gitExtension.isActive) {
+    vscode.window.showErrorMessage("Git extension is not available");
+    return;
+  }
+
+  const git = gitExtension.exports.getAPI(1);
+
+  // Get the current repository
+  const repos = git.repositories;
+  if (!repos || repos.length === 0) {
+    vscode.window.showErrorMessage("No Git repository found");
+    return;
+  }
+
+  const repo = repos[0];
+
   try {
-
-    const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0].uri.fsPath : null;
-
-    if (!workspaceFolder) {
-      vscode.window.showErrorMessage('No workspace folder open.');
-      return;
-    }
-
-    const git = simpleGit(workspaceFolder)
-    const status = await git.status();
-    const conflictedFiles = status.conflicted;
-
-    // If there are no conflicted files, show a message and return
-    if (conflictedFiles.length === 0) {
-      vscode.window.showInformationMessage("No conflicts found.");
-      return;
-    }
-
-
-    // Find the next conflicted file which contains conflict markers
-    for (const filePath of conflictedFiles) {
-      try {
-        let fullFilePath = path.join(workspaceFolder, filePath);
-        const content = await fs.readFile(fullFilePath, 'utf8');
-
-        // Check if the content matches the regex
-        if (CONFLICT_ANY_PATTERN.test(content)) {
-
-          await openFileAndScrollToConflict(fullFilePath);
-          break;
-        }
-      } catch (error) {
-        console.error(error);
+    // Use the Git extension's internal API to run commands
+    // This is more reliable than trying to call exec directly
+    const result = await vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Notification,
+        title: "Searching with git grep...",
+        cancellable: false,
+      },
+      async () => {
+        return execSync(`git grep -n -E "${CONFLICT_ANY_PATTERN}" | head -1`, {
+          cwd: workspaceFolder,
+          encoding: "utf-8",
+        });
       }
+    );
+
+    if (!result || !result.trim()) {
+      vscode.window.showInformationMessage(
+        "No conflict markers found in the workspace."
+      );
+      return;
     }
 
+    // Parse the first result - format is "filename:line:content"
+    const lines = result.split("\n");
+    const firstMatch = lines[0].split(":");
+
+    if (firstMatch.length < 2) {
+      return;
+    }
+
+    const filePath = firstMatch[0];
+    const lineNumber = parseInt(firstMatch[1], 10) - 1; // VSCode uses 0-based line numbers
+
+    console.log(filePath, lineNumber);
+
+    // Open the file at the specified line
+    const uri = vscode.Uri.file(`${repo.rootUri.fsPath}/${filePath}`);
+    const document = await vscode.workspace.openTextDocument(uri);
+
+    console.log("opening ", `${repo.rootUri.fsPath}/${filePath}`);
+
+    await vscode.window.showTextDocument(document, {
+      selection: new vscode.Selection(lineNumber, 0, lineNumber, 0),
+      preview: true,
+    });
   } catch (error) {
     vscode.window.showErrorMessage("Error finding conflicts.");
-    console.error(error);
-  }
-}
-
-async function openFileAndScrollToConflict(filePath: string) {
-  try {
-    // Open the conflicted file
-    const uri = vscode.Uri.file(filePath);
-    const document = await vscode.workspace.openTextDocument(uri);
-    const editor = await vscode.window.showTextDocument(document);
-
-    // Find the first conflict marker in the file
-    const text = document.getText();
-    const match = text.match(CONFLICT_ANY_PATTERN);
-
-    if (match) {
-
-      // Get the position of the conflict marker
-      const position = document.positionAt(text.indexOf(match[0]));
-      const range = new vscode.Range(position, position);
-
-      // Set the selection to the conflict marker
-      editor.selection = new vscode.Selection(range.start, range.end);
-
-      // Scroll to the conflict marker (center it in the editor window)
-      editor.revealRange(range, vscode.TextEditorRevealType.InCenter);
-    } else {
-      vscode.window.showInformationMessage("No conflict markers found in the file.");
-    }
-  } catch (error) {
-    vscode.window.showErrorMessage("Error opening file or finding conflict.");
     console.error(error);
   }
 }

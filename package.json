@@ -2,7 +2,7 @@
   "name": "abraham-utils",
   "displayName": "Abraham Utils",
   "description": "Vscode backend for various talon commands.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/abrahamneben/abraham_utils.git"
