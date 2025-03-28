@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
+const fs = require('fs').promises;
 const simpleGit = require('simple-git');
 
 const CONFLICT_START_PATTERN = /^<<<<<<<\s*(.*)$/;
@@ -227,14 +228,29 @@ export async function goNextConflict(editor: vscode.TextEditor) {
       return;
     }
 
-      // Open the first conflicted file
-      const filePath = path.join(workspaceFolder, conflictedFiles[0]);
-      await openFileAndScrollToConflict(filePath);
-    } catch (error) {
-      vscode.window.showErrorMessage("Error finding conflicts.");
-      console.error(error);
+
+    // Find the next conflicted file which contains conflict markers
+    for (const filePath of conflictedFiles) {
+      try {
+        let fullFilePath = path.join(workspaceFolder, filePath);
+        const content = await fs.readFile(fullFilePath, 'utf8');
+
+        // Check if the content matches the regex
+        if (CONFLICT_ANY_PATTERN.test(content)) {
+
+          await openFileAndScrollToConflict(fullFilePath);
+          break;
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
+
+  } catch (error) {
+    vscode.window.showErrorMessage("Error finding conflicts.");
+    console.error(error);
   }
+}
 
 async function openFileAndScrollToConflict(filePath: string) {
   try {
