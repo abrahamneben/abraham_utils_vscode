@@ -2,9 +2,9 @@ import * as vscode from "vscode";
 import { execSync } from "child_process";
 
 const CONFLICT_START_PATTERN = /^<<<<<<<\s*(.*)$/;
-const CONFLICT_DIVIDER_PATTERN = /^=======\s*(.*)$/;
+const CONFLICT_DIVIDER_PATTERN = /^=======$/;
 const CONFLICT_END_PATTERN = /^>>>>>>>\s*(.*)$/;
-const CONFLICT_ANY_PATTERN = "^(<{7}|={7}|>{7})";
+const CONFLICT_ANY_PATTERN = "^(<{7} |={7}$|>{7} )";
 
 type ConflictBlock = {
   start: number;

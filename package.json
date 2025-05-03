@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/abrahamneben/abraham_utils.git"
   },
-  "publisher": "Abraham Neben",
+  "publisher": "Abraham-Neben",
   "engines": {
     "vscode": "^1.95.0"
   },
