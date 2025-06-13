@@ -7,6 +7,9 @@ import {
   goNextConflict
 } from './conflictUtils';
 import {
+  toggleCheckmark
+} from './textProcessing';
+import {
   goBuildFile,
   toggleHeaderAndSourceFile
 } from './workspaceNavigator';
@@ -83,6 +86,13 @@ export function activate(
       if (!editor) return;
 
       toggleHeaderAndSourceFile(editor);
+    }),
+
+    vscode.commands.registerCommand('abraham_utils.toggleCheckmark', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) return;
+
+      toggleCheckmark(editor);
     })
 
 

@@ -21,7 +21,8 @@
     "onCommand:abraham_utils.rejectBothSides",
     "onCommand:abraham_utils.goNextConflict",
     "onCommand:abraham_utils.goBuildFile",
-    "onCommand:abraham_utils.toggleHeaderAndSourceFile"
+    "onCommand:abraham_utils.toggleHeaderAndSourceFile",
+    "onCommand:abraham_utils.toggleCheckmark"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -53,6 +54,10 @@
       {
         "command": "abraham_utils.toggleHeaderAndSourceFile",
         "title": "Abraham Utils: Go to header or source file"
+      },
+      {
+        "command": "abraham_utils.toggleCheckmark",
+        "title": "Abraham Utils: Toggle checkmark"
       }
     ]
   },
