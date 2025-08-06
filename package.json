@@ -2,7 +2,7 @@
   "name": "abraham-utils",
   "displayName": "Abraham Utils",
   "description": "Vscode backend for various talon commands.",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/abrahamneben/abraham_utils.git"
@@ -22,7 +22,10 @@
     "onCommand:abraham_utils.goNextConflict",
     "onCommand:abraham_utils.goBuildFile",
     "onCommand:abraham_utils.toggleHeaderAndSourceFile",
-    "onCommand:abraham_utils.toggleCheckmark"
+    "onCommand:abraham_utils.toggleCheckmark",
+    "onCommand:abraham_utils.openNotebookAsText",
+    "onCommand:abraham_utils.openTextAsNotebook",
+    "onCommand:abraham_utils.openTerminalHere"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -58,6 +61,22 @@
       {
         "command": "abraham_utils.toggleCheckmark",
         "title": "Abraham Utils: Toggle checkmark"
+      },
+      {
+        "command": "extension.openNotebookAsText",
+        "title": "Abraham Utils: Open Active Notebook as Text"
+      },
+      {
+        "command": "extension.openTextAsNotebook",
+        "title": "Abraham Utils: Open Active Text as Notebook"
+      },
+      {
+        "command": "extension.connectToRunningKernel",
+        "title": "Abraham Utils: Connect to Remote Kernel"
+      },
+      {
+        "command": "extension.openTerminalHere",
+        "title": "Abraham Utils: Open Terminal Here"
       }
     ]
   },
